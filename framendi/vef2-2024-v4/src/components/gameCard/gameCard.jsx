@@ -2,8 +2,9 @@ import React from "react";
 import styles from "./gameCard.module.css";
 import Link from "next/link";
 import GameDate from "../gameDate/gameDate";
+import Image from "next/image";
 
-export default function GameCard({ game }) {
+export default function GameCard({ game, showDeleteButton }) {
     if (!game) {
         return null;
     }
@@ -33,6 +34,15 @@ export default function GameCard({ game }) {
                         {game.away.score}
                     </div>
                 </div>
+                {showDeleteButton &&
+                    <div className={styles.deleteButtonContainer}>
+                        <button className={styles.deleteButton}><Image
+                            src="./trash.svg"
+                            width={40}
+                            height={45}
+                            quality={100}
+                        /></button>
+                    </div>}
             </div>
         </Link>
     );

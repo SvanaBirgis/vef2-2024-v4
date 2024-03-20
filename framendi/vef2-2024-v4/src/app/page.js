@@ -14,8 +14,8 @@ export default async function Home() {
   const games = await getHomeGames();
   // console.log('games', games);
   return (
-    <main className={styles.main}>
-      <GamesGrid games={games} />
-    </main>
+    <div className={styles.container}>
+      <GamesGrid games={games} showDeleteButton={false}/>
+    </div>
   );
 }
