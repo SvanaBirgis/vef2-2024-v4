@@ -13,7 +13,7 @@ export default function GamesGrid({ games, showDeleteButton }) {
     return (
         <div className={styles.container}>
             <div className={styles.games}>
-                {games.map(game => ( // todo adlaga ad okkar games og baeta vid stilum i gamesgrid.module.css
+                {games.map(game => (
                     <GameCard game={game} key={game.id} showDeleteButton={showDeleteButton}/>
                 ))}
             </div>

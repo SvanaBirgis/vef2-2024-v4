@@ -10,14 +10,6 @@ async function getGames() {
   return games;
 }
 
-async function deleteGameById(id) {
-  const res = await fetch(`${process.env.API_URL}/games/${id}`, {
-    method: "DELETE",
-  });
-  return res.ok;
-}
-
-
 
 export default async function GamesPage() {
   const games = await getGames();

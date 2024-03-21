@@ -9,7 +9,6 @@ async function getTeams() {
 }
 
 export default async function AddGame() {
-    'use server'
     const teams = await getTeams();
 
     async function addGame(formData) {

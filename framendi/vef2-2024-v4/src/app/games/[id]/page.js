@@ -2,6 +2,7 @@ import Image from "next/image";
 import styles from "./page.module.css";
 import { notFound } from "next/navigation";
 import GamesGrid from "@/components/gamesgrid/gamesgrid";
+import GameDate from "@/components/gameDate/gameDate";
 
 
 async function getGame(id) {
@@ -24,7 +25,7 @@ export default async function GamePage({ params }) {
     <main className={styles.container}>
       <div className={styles.dateContainer}>
         <div className={styles.date}>
-          {game.date}
+          <GameDate date={new Date(game.date)} />
         </div>
       </div>
       <div className={styles.gameContainer}>
