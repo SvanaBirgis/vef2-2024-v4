@@ -1,45 +1,23 @@
+'use client'
 import React from "react";
 import styles from "./addGame.module.css";
 import Image from "next/image";
+import { fetcher } from "@/utils/fetcher";
+import useSWR from "swr";
+import { addGameByFormData } from "./addGameByFormData"
 
-async function getTeams() {
-    const res = await fetch(`${process.env.API_URL}/teams`);
-    let teams = await res.json();
-    return teams;
-}
+export default function AddGame() {
+    const { data, isLoading, error } = useSWR(`/api/teams`, fetcher)
 
-export default async function AddGame() {
-    const teams = await getTeams();
-
-    async function addGame(formData) {
-        'use server'
-        const postBody = {
-            home: formData.get('home'),
-            away: formData.get('away'),
-            home_score: parseInt(formData.get('homeScore')),
-            away_score: parseInt(formData.get('awayScore')),
-            date: new Date(formData.get('date')).toISOString(),
-        }
-        console.log(postBody)
-        const res = await fetch(`${process.env.API_URL}/games`, {
-            method: "POST",
-            body: postBody,
-        });
-
-        if (res.ok) {
-            console.info("Game added successfully");
-        } else {
-            console.error("Error adding game");
-            console.error(await res.json());
-        }
-    }
+    if (error) return <div>Failed to load teams..</div>
+    if (isLoading) return <div>Loading teams...</div>
 
     return (
         <div className={styles.container}>
             <div className={styles.addGameTitle}>
                 <h1>Add Game</h1>
             </div>
-            <form action={addGame} >
+            <form action={addGameByFormData}>
                 <label className={styles.dateContainer}>
                     <p className={styles.dateTitle}>Date:</p>
                     <input type="datetime-local" name="date" />
@@ -48,7 +26,7 @@ export default async function AddGame() {
                     <label className={styles.homeName}>
                         <p className={styles.homeNameTitle}>Home Team:</p>
                         <select name="home" >
-                            {teams.map(team => (
+                            {data.map(team => (
                                 <option value={team.id} key={team.id}>{team.name}</option>
                             ))}
                         </select>
@@ -59,7 +37,7 @@ export default async function AddGame() {
                     <label className={styles.awayName}>
                         <p className={styles.awayNameTitle}>Away Team:</p>
                         <select name="away" >
-                            {teams.map(team => (
+                            {data.map(team => (
                                 <option value={team.id} key={team.id}>{team.name}</option>
                             ))}
                         </select>

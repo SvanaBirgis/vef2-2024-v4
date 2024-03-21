@@ -5,7 +5,7 @@ import { format } from "date-fns";
 import GameCard from "../gameCard/gameCard";
 
 
-export default function GamesGrid({ games, showDeleteButton }) {
+export default function GamesGrid({ games, showDeleteButton, handleDeleteSuccess }) {
     if (!games) {
         return null;
     }
@@ -14,7 +14,10 @@ export default function GamesGrid({ games, showDeleteButton }) {
         <div className={styles.container}>
             <div className={styles.games}>
                 {games.map(game => (
-                    <GameCard game={game} key={game.id} showDeleteButton={showDeleteButton}/>
+                    <GameCard game={game}
+                        key={game.id}
+                        showDeleteButton={showDeleteButton}
+                        handleDeleteSuccess={handleDeleteSuccess} />
                 ))}
             </div>
         </div>
