@@ -7,13 +7,13 @@ import GameCard from "../gameCard/gameCard";
 
 export default function GamesGrid({ games, showDeleteButton, handleDeleteSuccess }) {
     if (!games) {
-        return null;
+        return <></>;
     }
 
     return (
         <div className={styles.container}>
             <div className={styles.games}>
-                {games.map(game => (
+                {games?.length > 0 && games?.map(game => (
                     <GameCard game={game}
                         key={game.id}
                         showDeleteButton={showDeleteButton}

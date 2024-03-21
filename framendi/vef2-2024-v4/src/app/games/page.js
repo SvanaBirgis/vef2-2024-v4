@@ -6,6 +6,7 @@ import styles from "./page.module.css";
 import GamesGrid from "@/components/gamesgrid/gamesgrid";
 import AddGame from "@/components/addGame/addGame";
 import { fetcher } from "@/utils/fetcher";
+import { PacmanLoader } from "react-spinners";
 
 export default function GamesPage() {
   const [games, setGames] = useState([]);
@@ -19,11 +20,13 @@ export default function GamesPage() {
   }, [data])
 
   if (error) return <div>Failed to load..</div>
-  if (isLoading) return <div>Loading...</div>
+  if (isLoading) return <PacmanLoader color="white" />
 
 
   const handleDeleteSuccess = (deletedGameId) => {
+    console.log('handleDeleteSuccess', deletedGameId)
     setGames(games.filter(game => game.id !== deletedGameId));
+
   };
 
   return (
@@ -33,7 +36,9 @@ export default function GamesPage() {
           <AddGame />
         </div>
         <div className={styles.container}>
-          <GamesGrid games={data} showDeleteButton={true} handleDeleteSuccess={handleDeleteSuccess} />
+          <GamesGrid games={games}
+            showDeleteButton={true}ß
+            handleDeleteSuccess={handleDeleteSuccess} />
         </div>
       </Suspense>
     </>

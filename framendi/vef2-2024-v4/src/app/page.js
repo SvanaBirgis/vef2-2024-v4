@@ -3,11 +3,17 @@ import styles from "./page.module.css";
 import GamesGrid from "@/components/gamesgrid/gamesgrid";
 
 async function getHomeGames() {
-  const res = await fetch(`${process.env.API_URL}/games`, { cache: 'no-store' });
-  let games = await res.json(); // Just get the 5 latest games by date
-  games.sort((a, b) => new Date(b.date) - new Date(a.date));
-  games = games.slice(0, 5);
-  return games;
+  try {
+
+    const res = await fetch(`${process.env.API_URL}/games`, { cache: 'no-store' });
+    let games = await res.json(); // Just get the 5 latest games by date
+    games.sort((a, b) => new Date(b.date) - new Date(a.date));
+    games = games.slice(0, 5);
+    return games;
+  } catch (error) {
+    console.error("Failed to fetch games", error);
+    return [];
+  }
 }
 
 export default async function Home() {
@@ -22,7 +28,7 @@ export default async function Home() {
         Add or delete matches to tailor your experience, ensuring you're always in sync with the pulse of 
         the league. Embrace the excitement of the season and shape your journey through the thrilling world 
         of football! </p>
-        <p className={styles.titleGameGrid}>Here you can see the 5 latest games that have been played.</p>
+        {games?.length > 0 && <p className={styles.titleGameGrid}>Here you can see the 5 latest games that have been played.</p>}
         <GamesGrid games={games} showDeleteButton={false} />
       </div>
 

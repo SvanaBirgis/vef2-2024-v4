@@ -6,6 +6,11 @@ export async function addGameByFormData(formData) {
     if (!formData) {
         return;
     }
+    if (!formData.get('home') || !formData.get('away') || !formData.get('homeScore') || !formData.get('awayScore') || !formData.get('date')) {
+        console.error("Missing required fields");
+        return;
+    }
+    
     const postBody = {
         home: formData.get('home'),
         away: formData.get('away'),
