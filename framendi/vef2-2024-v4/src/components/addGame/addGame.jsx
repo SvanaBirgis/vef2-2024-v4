@@ -4,20 +4,43 @@ import styles from "./addGame.module.css";
 import Image from "next/image";
 import { fetcher } from "@/utils/fetcher";
 import useSWR from "swr";
-import { addGameByFormData } from "./addGameByFormData"
+import { getPostBodyByFormData } from "../../utils/addGameByFormData"
 
-export default function AddGame() {
-    const { data, isLoading, error } = useSWR(`/api/teams`, fetcher)
+export default function AddGame({handleAddGame, handleAddGameError}) {
+    const { data, isLoading, error } = useSWR(`/api/teams`, fetcher);
 
     if (error) return <div>Failed to load teams..</div>
     if (isLoading) return <div>Loading teams...</div>
+
+    async function onSubmit(event) {
+        event.preventDefault()
+     
+        const formData = new FormData(event.currentTarget);
+        console.log('formData', formData.values);
+        console.log(formData.get('home'))
+        const postBody = await getPostBodyByFormData(formData);
+        console.log('postBody', postBody);
+        const res = await fetch('/api/games', {
+          method: 'POST',
+          body: JSON.stringify(postBody),
+        })
+     
+        if (res.ok) {
+            const game = await res.json();
+            handleAddGame(game)
+        } else {
+            console.error('Failed to add game');
+            handleAddGameError("Failed to add game")
+        }
+      }
+    
 
     return (
         <div className={styles.container}>
             <div className={styles.addGameTitle}>
                 <h1>Add Game</h1>
             </div>
-            <form action={addGameByFormData}>
+            <form onSubmit={onSubmit}>
                 <label className={styles.dateContainer}>
                     <p className={styles.dateTitle}>Date:</p>
                     <input type="datetime-local" name="date" />
